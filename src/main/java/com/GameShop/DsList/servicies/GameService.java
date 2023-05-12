@@ -10,6 +10,7 @@ import com.GameShop.DsList.dto.GameDTO;
 import com.GameShop.DsList.dto.GameMinDTO;
 import com.GameShop.DsList.entities.Game;
 import com.GameShop.DsList.positories.GameRepository;
+import com.GameShop.DsList.projections.GameMinProjection;
 
 @Service
 public class GameService {
@@ -26,6 +27,12 @@ public class GameService {
 	@Transactional(readOnly = true)
 	public List<GameMinDTO> findAll() {
 		List<Game> result = gameRepository.findAll();
+		return result.stream().map(x -> new GameMinDTO(x)).toList();
+	}
+	
+	@Transactional(readOnly = true)
+	public List<GameMinDTO> findByList(Long listId) {
+		List<GameMinProjection> result = gameRepository.searchByList(listId);
 		return result.stream().map(x -> new GameMinDTO(x)).toList();
 	}
 }
